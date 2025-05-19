@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # ① Job 전체에 env 주입
+    env:
+      FIN_API_KEY: ${{ secrets.FIN_API_KEY }} // 금융결제원 api 키
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,4 +25,5 @@ jobs:
           java-version: '21'
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        # ② Gradle 빌드 시 시스템 프로퍼티로도 전달할 수 있어요
+        run: ./gradlew clean build -PfinApiKey=$FIN_API_KEY
